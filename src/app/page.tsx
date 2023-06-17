@@ -1,6 +1,9 @@
 import Image from 'next/image'
+import writeToDB from './db'
+import { write } from 'fs'
 
 export default function Home() {
+  writeToDB()
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
