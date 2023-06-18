@@ -1,14 +1,17 @@
-function writeToDB() {
+const fs = require("fs");
+
+type game = {
+  id: number;
+  players: Array<Object>;
+  finished?: boolean;
+};
+
+type games = {
+  games: Array<game>;
+};
+
+function writeToDB(): undefined {
   var fs = require("fs");
-
-  type game = {
-    id: number;
-    players: Array<Object>;
-  };
-
-  type games = {
-    games: Array<game>;
-  };
 
   var obj: games = {
     games: [],
@@ -18,7 +21,6 @@ function writeToDB() {
 
   var json = JSON.stringify(obj);
 
-  var fs = require("fs");
   const callback = () => console.log("file written");
   fs.writeFile("db.json", json, "utf8", callback);
 
@@ -31,7 +33,7 @@ function writeToDB() {
       } else {
         console.log("writing...");
         obj = JSON.parse(data); //now it's an object
-        obj.games.push({ id: 2, players: [] }); //add some data
+        obj.games.push({ id: 2, players: [{ name: "Todd" }] }); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile("db.json", json, "utf8", callback); // write it back
       }
@@ -39,4 +41,21 @@ function writeToDB() {
   );
 }
 
-export default writeToDB;
+function readFromDB(): games {
+  const result = fs.readFileSync(
+    "db.json",
+    "utf8",
+    function readFileCallback(err: Error, data: any) {
+      if (err) {
+        console.log(err);
+      } else {
+        const obj = JSON.parse(data); //now it's an object
+        return obj && obj;
+      }
+    }
+  );
+
+  return result && JSON.parse(result);
+}
+
+export { writeToDB, readFromDB };

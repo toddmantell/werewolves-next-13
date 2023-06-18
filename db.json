@@ -1,1 +1,1 @@
-{"games":[{"id":999,"players":[{}]},{"id":2,"players":[]}]}
+{"games":[{"id":999,"players":[{}], "finished": true},{"id":2,"players":[{"name":"Todd"}]}]}
