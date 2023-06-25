@@ -26,7 +26,7 @@ export default function Page() {
 
   return (
     <>
-      <div>Number: {state.players}</div>
+      <div className="heading">Number Of Players: {state.players}</div>
       <div>
         <input
           type="text"
