@@ -1,142 +1,49 @@
 import { CharacterType, names, nights } from "../Characters/Characters";
 
-const game = {
-  firstNight: new Set(),
-  secondNight: new Set(),
-  thirdNight: new Set(),
-  fourthNight: new Set(),
-  fifthNight: new Set(),
-  sixthNight: new Set(),
-  seventhNight: new Set(),
-  eighthNight: new Set(),
-  ninthNight: new Set(),
-};
+function numberOfWerewolves(numberOfPlayers: number): number {
+  if (numberOfPlayers < 10) return 2;
+  else if ("pseudocode: whitewolf exists") return 99999;
+  else if ("pseudocode: direwolf exists") return 99999;
+  return 7676767676;
+}
 
-// Old version (6/22/23)
-export default function addToNight(
-  characterName: string,
-  night: Set<string>
-): Set<string> {
-  const {
-    firstNight,
-    secondNight,
-    thirdNight,
-    fourthNight,
-    fifthNight,
-    sixthNight,
-    seventhNight,
-    eighthNight,
-    ninthNight,
-  } = game;
-  //implement ordering logic:
-  //First Night Only: Cupid, Lovers, Angel, Three Brothers
-  //First Night Order: Cupid, Lovers, Three Brothers, Sisters, Dracula, Vampires, Werewolves, Big Bad
-  //Every Other Night: White Wolf, Wolf Hunter (if exists)
-  //Every Night: Defender, Dracula, Vampires, Werwolves, Big Bad (until one wolf killed), Witch, Gypsy, Psychic Sisters, Collector, Vigilante
-  //Witch is always after the werewolves, Dracula always before werewolves
-  const tempSet: Set<string> = new Set();
-  if (tempSet.has(characterName)) return night;
-  switch (characterName) {
-    case "wildchilditem":
-      firstNight.add(characterName);
-      break;
-    case "wolfhounditem":
-      firstNight.add(characterName);
-      break;
-    case "cupiditem":
-      firstNight.add("Cupid");
-      firstNight.add("Lovers");
-      break;
-    case "threebrothersitem":
-      firstNight.add("Three Brothers");
-      break;
-    case "psychicsistersitem":
-      firstNight.add("Psychic Sisters");
-      secondNight.add("Psychic Sisters");
-      thirdNight.add("Psychic Sisters");
-      fourthNight.add("Psychic Sisters");
-      break;
-    case "gypsyitem":
-      secondNight.add(characterName);
-      thirdNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "defenderitem":
-      secondNight.add(characterName);
-      thirdNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "draculaitem":
-      firstNight.add("Dracula");
-      firstNight.add("Vampires");
-      secondNight.add("Dracula");
-      secondNight.add("Vampires");
-      thirdNight.add("Dracula");
-      thirdNight.add("Vampires");
-      fourthNight.add("Dracula");
-      fourthNight.add("Vampires");
-      break;
-    case "werewolfitem":
-      firstNight.add("Werewolves");
-      secondNight.add("Werewolves");
-      thirdNight.add("Werewolves");
-      fourthNight.add("Werewolves");
-      break;
-    case "bigbadwolfitem":
-      firstNight.add(characterName);
-      secondNight.add(characterName);
-      thirdNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "whitewolfitem":
-      secondNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "angelitem": //break this out into another function that handles this logic?
-      firstNight.add(characterName);
-      break;
-    case "witchitem":
-      firstNight.add(characterName);
-      secondNight.add(characterName);
-      thirdNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "vigilanteitem":
-      secondNight.add(characterName);
-      thirdNight.add(characterName);
-      fourthNight.add(characterName);
-      break;
-    case "collectoritem":
-      secondNight.add(characterName + " (as it applies)");
-      thirdNight.add(characterName + " (as it applies)");
-      fourthNight.add(characterName + " (as it applies)");
-      break;
-  }
-  // We probably eventually want to just compile the set and then return it instead of mutating existing sets?
-  return tempSet;
+function generateNumberOfNights(numberOfPlayers: number): number {
+  //In theory you should have a max of half the number of nights for the number of characters
+  // i.e. 12 characters = 6 nights: each day and each night a character is killed off
+  // HOWEVER this is not always true because of the Witch and Defender protecting someone
+  if ("pseudocode: defender is not in the game")
+    return Math.ceil(numberOfPlayers * 0.5);
+  else if ("pseudocode: defender IS in the game") return numberOfPlayers;
+  return 989898989;
 }
 
 export function generateFlow(characters: Array<CharacterType> = []) {
   //implement ordering logic:
   //First Night Only: Cupid, Lovers, Angel, Three Brothers
   //First Night Order: Cupid, Lovers, Three Brothers, Sisters, Dracula, Vampires, Werewolves, Big Bad
-  //Every Other Night: White Wolf, Wolf Hunter (if exists)
+  //Every Other Night: White Wolf, Dire Wolf (if exists)
   //Every Night: Defender, Dracula, Vampires, Werwolves, Big Bad (until one wolf killed), Witch, Gypsy, Psychic Sisters, Collector, Vigilante
   //Witch is always after the werewolves, Dracula always before werewolves
 
-  const night1 = characters.filter(
-    (char) =>
-      char.nights !== nights.NONE &&
-      char.nights !== nights.ALL_BUT_FIRST &&
-      char.nights !== nights.EVERY_OTHER
-  );
+  // After night2 they just repeat, so you may be able to just programmatically generate those
+  // e.g. (odd nights after night1 feature all but every other night characters, evens include every other)
+  const night1 = characters
+    .filter(
+      (char) =>
+        char.nights !== nights.NONE &&
+        char.nights !== nights.ALL_BUT_FIRST &&
+        char.nights !== nights.EVERY_OTHER
+    )
+    .sort((a, b) => a.nightOrder - b.nightOrder);
 
-  const night2 = characters.filter(
-    (char) =>
-      char.nights === nights.EVERY_OTHER ||
-      char.nights === nights.ALL ||
-      char.nights === nights.ALL_BUT_FIRST
-  );
+  const night2 = characters
+    .filter(
+      (char) =>
+        char.nights === nights.EVERY_OTHER ||
+        char.nights === nights.ALL ||
+        char.nights === nights.ALL_BUT_FIRST
+    )
+    .sort((a, b) => a.nightOrder - b.nightOrder);
 
   const allNights = new Map();
   allNights.set("night1", night1);
