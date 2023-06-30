@@ -14,31 +14,57 @@ export enum nights {
   ALL_BUT_FIRST = 3,
 }
 
+export enum turnOrder {
+  CUPID,
+  SEER,
+  LOVERS,
+  TWO_SISTERS,
+  THREE_BROTHERS,
+  WILD_CHILD,
+  DEFENDER,
+  VIGILANTE,
+  WEREWOLVES,
+  WHITE_WOLF,
+  DIRE_WOLF,
+  BIG_BAD_WOLF,
+  WITCH,
+  GYPSY,
+  DRACULA,
+}
+
 export const names = {
   CUPID: "CUPID",
   DEFENDER: "DEFENDER",
+  DIREWOLF: "DIREWOLF",
   VIGILANTE: "VIGILANTE",
   VILLAGER: "VILLAGER",
   WEREWOLF: "WEREWOLF",
   WHITEWOLF: "WHITE WOLF",
+  WITCH: "WITCH",
 };
 
 export const Cupid: CharacterType = {
   name: names.CUPID,
   nights: nights.FIRST_ONLY,
-  nightOrder: 1,
+  nightOrder: turnOrder.CUPID,
 };
 
 export const Defender: CharacterType = {
   name: names.DEFENDER,
   nights: nights.ALL_BUT_FIRST,
-  nightOrder: 2,
+  nightOrder: turnOrder.DEFENDER,
+};
+
+export const Direwolf: CharacterType = {
+  name: names.DIREWOLF,
+  nights: nights.EVERY_OTHER,
+  nightOrder: turnOrder.DIRE_WOLF,
 };
 
 export const Vigilante: CharacterType = {
   name: names.VIGILANTE,
   nights: nights.ALL_BUT_FIRST,
-  nightOrder: 3,
+  nightOrder: turnOrder.VIGILANTE,
 };
 
 export const Villager: CharacterType = {
@@ -50,11 +76,17 @@ export const Villager: CharacterType = {
 export const Werewolf: CharacterType = {
   name: names.WEREWOLF,
   nights: nights.ALL,
-  nightOrder: 5,
+  nightOrder: turnOrder.WEREWOLVES,
 };
 
 export const WhiteWolf: CharacterType = {
   name: names.WHITEWOLF,
   nights: nights.EVERY_OTHER,
-  nightOrder: 6,
+  nightOrder: turnOrder.WHITE_WOLF,
+};
+
+export const Witch: CharacterType = {
+  name: names.WITCH,
+  nights: nights.ALL_BUT_FIRST,
+  nightOrder: turnOrder.WITCH,
 };

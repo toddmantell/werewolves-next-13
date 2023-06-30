@@ -7,26 +7,7 @@ function numberOfWerewolves(numberOfPlayers: number): number {
   return 7676767676;
 }
 
-function generateNumberOfNights(numberOfPlayers: number): number {
-  //In theory you should have a max of half the number of nights for the number of characters
-  // i.e. 12 characters = 6 nights: each day and each night a character is killed off
-  // HOWEVER this is not always true because of the Witch and Defender protecting someone
-  if ("pseudocode: defender is not in the game")
-    return Math.ceil(numberOfPlayers * 0.5);
-  else if ("pseudocode: defender IS in the game") return numberOfPlayers;
-  return 989898989;
-}
-
 export function generateFlow(characters: Array<CharacterType> = []) {
-  //implement ordering logic:
-  //First Night Only: Cupid, Lovers, Angel, Three Brothers
-  //First Night Order: Cupid, Lovers, Three Brothers, Sisters, Dracula, Vampires, Werewolves, Big Bad
-  //Every Other Night: White Wolf, Dire Wolf (if exists)
-  //Every Night: Defender, Dracula, Vampires, Werwolves, Big Bad (until one wolf killed), Witch, Gypsy, Psychic Sisters, Collector, Vigilante
-  //Witch is always after the werewolves, Dracula always before werewolves
-
-  // After night2 they just repeat, so you may be able to just programmatically generate those
-  // e.g. (odd nights after night1 feature all but every other night characters, evens include every other)
   const night1 = characters
     .filter(
       (char) =>
@@ -36,7 +17,7 @@ export function generateFlow(characters: Array<CharacterType> = []) {
     )
     .sort((a, b) => a.nightOrder - b.nightOrder);
 
-  const night2 = characters
+  const evenNights = characters
     .filter(
       (char) =>
         char.nights === nights.EVERY_OTHER ||
@@ -45,9 +26,24 @@ export function generateFlow(characters: Array<CharacterType> = []) {
     )
     .sort((a, b) => a.nightOrder - b.nightOrder);
 
+  const oddNights = characters
+    .filter(
+      (char) =>
+        char.nights === nights.ALL || char.nights === nights.ALL_BUT_FIRST
+    )
+    .sort((a, b) => a.nightOrder - b.nightOrder);
+
   const allNights = new Map();
-  allNights.set("night1", night1);
-  allNights.set("night2", night2);
+
+  const numberOfNights = (characters.length + 1) / 2;
+
+  for (var i = 1; i <= numberOfNights; i++) {
+    if (i === 1) allNights.set("night1", night1);
+    else if (i % 2 === 0) allNights.set(`night${i}`, evenNights);
+    else if (i % 1 === 0) allNights.set(`night${i}`, oddNights);
+  }
+
+  console.log("all nights", allNights);
 
   return allNights;
 }
