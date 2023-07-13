@@ -44,7 +44,7 @@ export default function Page() {
         <button onClick={() => alert("not implemented")}>Generate Game</button>
       </section>
       <Night
-        night={1}
+        night={"night1"}
         characters={[
           CharacterFactory(names.VILLAGER),
           CharacterFactory(names.WEREWOLF),

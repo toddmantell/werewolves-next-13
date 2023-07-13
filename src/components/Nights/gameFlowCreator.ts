@@ -8,6 +8,8 @@ function numberOfWerewolves(numberOfPlayers: number): number {
 }
 
 export function generateFlow(characters: Array<CharacterType> = []) {
+  // Also need to add Lovers somehow; maybe just a link between the two lovers
+
   const night1 = characters
     .filter(
       (char) =>
@@ -43,7 +45,7 @@ export function generateFlow(characters: Array<CharacterType> = []) {
     else if (i % 1 === 0) allNights.set(`night${i}`, oddNights);
   }
 
-  console.log("all nights", allNights);
+  // console.log("all nights", allNights);
 
   return allNights;
 }
