@@ -7,8 +7,11 @@ function numberOfWerewolves(numberOfPlayers: number): number {
   return 7676767676;
 }
 
-export function generateFlow(characters: Array<CharacterType> = []) {
+export function generateFlow(
+  characters: Array<CharacterType> = []
+): Map<string, Array<CharacterType>> {
   // Also need to add Lovers somehow; maybe just a link between the two lovers
+  console.log("characters:", characters);
 
   const night1 = characters
     .filter(

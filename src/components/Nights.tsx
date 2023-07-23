@@ -9,9 +9,13 @@ interface Props {
 
 export default function Nights({ characters }: Props) {
   const allNights = determineCharacterOrder(characters);
-  return allNights.forEach((sortedCharacters, key, map) => (
-    <Night characters={sortedCharacters} night={key} />
-  ));
+  return (
+    <>
+      {allNights.forEach((sortedCharacters, key, map) => (
+        <Night characters={sortedCharacters} night={key} />
+      ))}
+    </>
+  );
 }
 
 //Somewhere we need to generate an array of night objects [night1, night2]

@@ -43,6 +43,17 @@ export const names = {
   WITCH: "WITCH",
 };
 
+export const images = {
+  CUPID: "CUPID",
+  DEFENDER: "DEFENDER",
+  DIREWOLF: "DIREWOLF",
+  VIGILANTE: "VIGILANTE",
+  VILLAGER: "images/characters/Villageois_8889.jpg",
+  WEREWOLF: "images/characters/LoupGarou_321.jpg",
+  WHITEWOLF: "images/characters/LoupBlanc_3487.jpg",
+  WITCH: "images/characters/Sorciere_1222.jpg",
+};
+
 export const Cupid: CharacterType = {
   name: names.CUPID,
   nights: nights.FIRST_ONLY,

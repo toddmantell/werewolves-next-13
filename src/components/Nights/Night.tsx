@@ -12,7 +12,7 @@ export default ({ characters, night }: Props) => (
     <hr />
     <ol>
       {[...characters].map((character) => (
-        <li key={`char-${night}`}>{character.name}</li>
+        <li key={`char-${character.nights}`}>{character.name}</li>
       ))}
     </ol>
   </div>

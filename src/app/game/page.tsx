@@ -2,8 +2,10 @@
 
 import CharacterCard from "@/components/Characters/CharacterCard";
 import CharacterFactory from "@/components/Characters/CharacterFactory";
-import { names } from "@/components/Characters/Characters";
+import { images, names } from "@/components/Characters/Characters";
+import Nights from "@/components/Nights";
 import Night from "@/components/Nights/Night";
+import { generateFlow } from "@/components/Nights/gameFlowCreator";
 import { useReducer } from "react";
 
 export default function Page() {
@@ -17,12 +19,47 @@ export default function Page() {
           }
           return { ...state, players: action.players };
         }
+        case "add_character": {
+          return {
+            ...state,
+            characters: [
+              ...state.characters,
+              CharacterFactory(action.characterName),
+            ],
+          };
+        }
+        case "remove_character": {
+          return {
+            ...state,
+            characters: state.characters.filter(
+              (char) => char.name !== action.characterName
+            ),
+          };
+        }
+        case "nights_generated": {
+          return {
+            ...state,
+            nightsGenerated: true,
+          };
+        }
         default:
           return { ...state };
       }
     },
-    { players: 0 }
+    {
+      players: 0,
+      characters: [CharacterFactory(names.VILLAGER)],
+      nightsGenerated: false,
+    }
   );
+
+  const getGameFlow = () => {
+    const nights = generateFlow(state.characters);
+    nights.forEach((characters, nightNumber) => (
+      <Night characters={characters} night={nightNumber} />
+    ));
+    console.log("nights", nights);
+  };
 
   return (
     <>
@@ -38,18 +75,35 @@ export default function Page() {
           }
         />
       </div>
-      <section>
-        <CharacterCard characterName="Werewolf" />
-        <CharacterCard characterName="Villager" />
-        <button onClick={() => alert("not implemented")}>Generate Game</button>
+      <section style={{ display: "flex" }}>
+        <CharacterCard
+          characterName={names.WEREWOLF}
+          imageName={images.WEREWOLF}
+          dispatch={dispatch}
+        />
+        <CharacterCard
+          characterName={names.VILLAGER}
+          imageName={images.VILLAGER}
+          dispatch={dispatch}
+        />
+        <CharacterCard
+          characterName={names.WHITEWOLF}
+          imageName={images.WHITEWOLF}
+          dispatch={dispatch}
+        />
+        <CharacterCard
+          characterName={names.WITCH}
+          imageName={images.WITCH}
+          dispatch={dispatch}
+        />
+        <button onClick={() => getGameFlow()}>Generate Game</button>
       </section>
-      <Night
-        night={"night1"}
-        characters={[
-          CharacterFactory(names.VILLAGER),
-          CharacterFactory(names.WEREWOLF),
-        ]}
-      />
+      <section>
+        <h2>Nights:</h2>
+        <div>
+          {state.characters && <Nights characters={state.characters} />}
+        </div>
+      </section>
     </>
   );
 }
