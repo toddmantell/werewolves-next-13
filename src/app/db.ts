@@ -1,13 +1,9 @@
+import { Game } from "@/types/Game";
+
 const fs = require("fs");
 
-type game = {
-  id: number;
-  players: Array<Object>;
-  finished?: boolean;
-};
-
 type games = {
-  games: Array<game>;
+  games: Array<Game>;
 };
 
 function writeToDB(): undefined {

@@ -6,7 +6,7 @@ export default function Home() {
     result.games &&
     result.games.reduce((accumulator, current) => {
       console.log(current);
-      if (current?.finished && current.finished) return accumulator + 1;
+      if (current?.complete && current.complete) return accumulator + 1;
       return accumulator;
     }, 0);
 

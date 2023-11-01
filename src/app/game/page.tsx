@@ -10,7 +10,7 @@ import { useReducer } from "react";
 
 export default function Page() {
   const [state, dispatch] = useReducer(
-    (state: any, action: any) => {
+    (state: { characters: Array<string>; players: number }, action: any) => {
       switch (action.type) {
         case "number_of_players": {
           if (action.players > 30) {
@@ -22,17 +22,14 @@ export default function Page() {
         case "add_character": {
           return {
             ...state,
-            characters: [
-              ...state.characters,
-              CharacterFactory(action.characterName),
-            ],
+            characters: [...state.characters, action.characterName],
           };
         }
         case "remove_character": {
           return {
             ...state,
             characters: state.characters.filter(
-              (char) => char.name !== action.characterName
+              (charName: string) => charName !== action.characterName
             ),
           };
         }
@@ -48,25 +45,29 @@ export default function Page() {
     },
     {
       players: 0,
-      characters: [CharacterFactory(names.VILLAGER)],
+      characters: [names.VILLAGER],
       nightsGenerated: false,
     }
   );
 
   const getGameFlow = () => {
-    const nights = generateFlow(state.characters);
-    nights.forEach((characters, nightNumber) => (
-      <Night characters={characters} night={nightNumber} />
-    ));
-    console.log("nights", nights);
+    const { characters, players } = state;
+
+    if (players >= 5 && players < 30) {
+      const allNights = generateFlow(characters, players);
+      return dispatch({ type: "nights_generated" });
+    }
+
+    alert("not enough players");
   };
 
   return (
-    <>
+    <main style={{ marginTop: "100px" }}>
       <div className="heading">Number Of Players: {state.players}</div>
       <div>
         <input
           type="text"
+          style={{ border: "1px solid grey", borderRadius: "2px" }}
           onChange={(event) =>
             dispatch({
               type: "number_of_players",
@@ -101,9 +102,14 @@ export default function Page() {
       <section>
         <h2>Nights:</h2>
         <div>
-          {state.characters && <Nights characters={state.characters} />}
+          {state.nightsGenerated && (
+            <Nights
+              characters={state.characters}
+              numberOfPlayers={state.players}
+            />
+          )}
         </div>
       </section>
-    </>
+    </main>
   );
 }

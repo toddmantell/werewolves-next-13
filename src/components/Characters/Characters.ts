@@ -1,9 +1,9 @@
 export interface CharacterType {
-  name: String;
+  name: string;
   nights: number;
   nightOrder: number;
   disabled?: boolean;
-  ability?: String;
+  ability?: string;
 }
 
 export enum nights {

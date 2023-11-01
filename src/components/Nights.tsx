@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Night from "./Nights/Night";
 import { CharacterType } from "./Characters/Characters";
@@ -5,16 +7,19 @@ import { generateFlow } from "./Nights/gameFlowCreator";
 
 interface Props {
   characters: Array<CharacterType>;
+  numberOfPlayers: number;
 }
 
-export default function Nights({ characters }: Props) {
+export default function Nights({ characters, numberOfPlayers }: Props) {
   const allNights = determineCharacterOrder(characters);
   return (
-    <>
-      {allNights.forEach((sortedCharacters, key, map) => (
-        <Night characters={sortedCharacters} night={key} />
-      ))}
-    </>
+    <section>
+      tktktk
+      {allNights.forEach((sortedCharacters, key, map) => {
+        console.log("sortedcharacters: ", sortedCharacters);
+        <Night characters={sortedCharacters} night={key + 1} />;
+      })}
+    </section>
   );
 }
 
